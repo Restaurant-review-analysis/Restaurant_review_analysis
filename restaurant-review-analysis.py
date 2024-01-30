@@ -104,4 +104,93 @@ import sqlite3
 conn = sqlite3.connect('Restaurant_food_data.db')
 c = conn.cursor()
 
+# In[17]:
+
+
+import nltk
+nltk.download('stopwords')
+
+
+# Text Preprocessing
+
+# In[18]:
+
+
+import re
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem.porter import PorterStemmer
+from sklearn.feature_extraction.text import CountVectorizer
+
+
+# In[19]:
+
+
+for i in range(0, 1000):
+    review = re.sub('[^a-zA-Z]', ' ', dataset['Review'][i])
+    review = review.lower()
+    review = review.split()
+
+    ps = PorterStemmer()
+    all_stopwords = stopwords.words('english')
+    all_stopwords.remove('not')
+
+    review = [ps.stem(word)
+              for word in review if not word in set(all_stopwords)]
+
+    review = ' '.join(review)
+    corpus.append(review)
+
+
+# In[20]:
+
+
+cv = CountVectorizer(max_features=1500)
+
+
+# Visualizations
+
+# In[21]:
+
+
+get_ipython().system('pip install wordcloud')
+
+
+# In[22]:
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from wordcloud import WordCloud
+
+
+# In[23]:
+
+
+# Bar Chart for Liked/Disliked Reviews
+sns.countplot(x='Liked', data=dataset)
+plt.title('Distribution of Liked/Disliked Reviews')
+plt.show()
+
+
+# In[24]:
+
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Assuming 'corpus' is your list of preprocessed reviews
+review_lengths = [len(review.split()) for review in corpus]
+plt.figure(figsize=(10, 6))
+sns.histplot(review_lengths, bins=range(min(review_lengths), max(review_lengths) + 2), kde=True, color='skyblue', binwidth=1)
+plt.title('Distribution of Review Lengths')
+plt.xlabel('Number of Words in Review')
+plt.ylabel('Frequency')
+
+# Customize x-axis ticks and labels
+plt.xticks(range(min(review_lengths), max(review_lengths) + 1))
+
+plt.show()
+
 
