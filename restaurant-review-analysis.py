@@ -193,4 +193,79 @@ plt.xticks(range(min(review_lengths), max(review_lengths) + 1))
 
 plt.show()
 
+# In[25]:
 
+
+get_ipython().system('pip install nltk matplotlib pandas seaborn wordcloud')
+
+
+# In[26]:
+
+
+get_ipython().system('pip install tk')
+
+
+# In[28]:
+
+
+get_ipython().system('pip install Pillow')
+
+
+# In[71]:
+
+
+from tkinter import Tk, Label, Button, W, E
+import sqlite3
+
+def take_review():
+    # Implement the functionality for the take_review function
+    pass
+
+def login():
+    # Implement the functionality for the login function
+    pass
+
+root1 = Tk()
+main = "Restaurant Review Analysis System/"
+root1.title(main + "Welcome Page")
+
+# Set the background color of the Tkinter window
+root1.configure(bg='#f0f0f0')  # Replace '#f0f0f0' with the desired background color code
+
+label = Label(root1, text="RESTAURANT REVIEW ANALYSIS SYSTEM",
+              bd=2, font=('Arial', 46, 'bold', 'underline'), bg='#f0f0f0')
+
+ques = Label(root1, text="Are you a Customer or Owner ???", bg='#f0f0f0')
+
+cust = Button(root1, text="Customer", font=('Arial', 20),
+              padx=80, pady=20, command=take_review, bg='#4CAF50', fg='white')  # Set background and foreground color
+
+owner = Button(root1, text="Owner", font=('Arial', 20),
+               padx=100, pady=20, command=login, bg='#008CBA', fg='white')  # Set background and foreground color
+
+# Define the database connection
+conn = sqlite3.connect('Restaurant_food_data.db')
+c = conn.cursor()
+
+# Uncomment the following lines if you want to create a table
+'''
+c.execute("CREATE TABLE item (Item_name text,No_of_customers text,\
+            No_of_positive_reviews text,No_of_negative_reviews text,\
+            Positive_percentage text,Negative_percentage text) ")
+'''
+
+# Uncomment the following line if you want to delete data from the table
+# c.execute("DELETE FROM item")
+
+root1.state('zoomed')  # Maximize the window
+label.grid(row=0, column=0)
+ques.grid(row=1, column=0, sticky=W + E)
+ques.config(font=("Helvetica", 30))
+cust.grid(row=2, column=0)
+owner.grid(row=3, column=0)
+
+# Commit and close the database connection
+conn.commit()
+conn.close()
+
+root1.mainloop()
